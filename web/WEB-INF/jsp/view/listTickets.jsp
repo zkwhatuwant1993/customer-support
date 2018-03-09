@@ -10,8 +10,8 @@
 
 <%
     @SuppressWarnings("unchecked")
-    Map<String,Ticket> ticketsDatabase =
-            (Map<String, Ticket>) request.getAttribute("ticketDatabase");
+    Map<Integer,Ticket> ticketsDatabase =
+            (Map<Integer, Ticket>) request.getAttribute("ticketDatabase");
 
 %>
 <html>
@@ -27,9 +27,10 @@
         if (ticketsDatabase.size() == 0) {
             %><i>There are no tickets in the system.</i><%
         } else {
-            for (String id :
+            Ticket ticket;
+            for (Integer id :
                     ticketsDatabase.keySet()) {
-                Ticket ticket = ticketsDatabase.get(id);
+                ticket = ticketsDatabase.get(id);
                 %>Ticket #<%= id%>
                     <a href="tickets?action=view&ticketId=<%= id%>"><%= ticket.getSubject()%></a>
                     (customer: <%= ticket.getCustomerName()%>)<br>

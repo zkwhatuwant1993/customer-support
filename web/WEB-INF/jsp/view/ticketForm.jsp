@@ -12,7 +12,7 @@
 </head>
 <body>
     <h2>Create a Ticket</h2><br>
-    <form method="post" action="/tickets" enctype="multipart/form-data">
+    <form method="post" action="tickets" enctype="multipart/form-data">
         <input type="hidden" name="action" value="create">
         YourName<br>
         <input type="text" name="customerName" /><br><br>

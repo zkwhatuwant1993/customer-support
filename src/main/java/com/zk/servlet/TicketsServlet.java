@@ -4,6 +4,7 @@ import com.zk.Attachment;
 import com.zk.Ticket;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,36 +27,70 @@ import java.util.Map;
 	maxFileSize = 20_971_520L, //20MB
 	maxRequestSize = 41_943_040L //40MB
 )
-public class TicketsServlet extends HttpServlet{
+public class TicketsServlet extends HttpServlet {
 	private volatile int TICKET_ID_SEQUENCE = 0;
 	private Map<Integer, Ticket> ticketDatabase = new HashMap<>();
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String action = req.getParameter("action");
 		if (action == null) {
-			listTickets(req,resp);
+			listTickets(req, resp);
 		} else {
 			switch (action) {
 				case "create":
-					showTicketForm(req,resp);
+					showTicketForm(req, resp);
 					break;
 				case "view":
-					viewTicket(req,resp);
+					viewTicket(req, resp);
+					break;
+				case "download":
+					downloadAttachment(req, resp);
+					break;
 			}
 		}
 	}
 
+	private void downloadAttachment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		//根据用户提交的请求参数在数据库里查出对应的信息
+		String id = req.getParameter("ticketId");
+		Ticket ticket = ticketDatabase.get(Integer.valueOf(id));
+		if (ticket == null) {
+			return;
+		}
+
+		String attachmentName = req.getParameter("attachment");
+		if (attachmentName == null) {
+			resp.sendRedirect("tickets?action=view&ticketId=" + id);
+			return;
+		}
+		Attachment attachment = ticket.getAttachment(attachmentName);
+		if (attachment == null) {
+			resp.sendRedirect("tickets?action=view&ticketId=" + id);
+			return;
+		}
+
+		//将附件返回给客户端
+		//设置响应头
+		resp.setHeader("Content-Disposition",
+			"attachment; filename=" + attachment.getName());
+		//以流输出内容
+		ServletOutputStream servletOutputStream = resp.getOutputStream();
+		servletOutputStream.write(attachment.getContent());
+	}
+
 	private void viewTicket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String id = req.getParameter("id");
+		String id = req.getParameter("ticketId");
 		Ticket ticket = ticketDatabase.get(Integer.valueOf(id));
 
-		req.setAttribute("ticket",ticket);
-		req.getRequestDispatcher("").forward(req,resp);
+		req.setAttribute("ticket", ticket);
+		req.setAttribute("id", id);
+		req.getRequestDispatcher("WEB-INF/jsp/view/viewTicket.jsp").forward(req, resp);
 	}
 
 	private void showTicketForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
- 		IOException {
-		req.getRequestDispatcher("WEB-INF/jsp/view/ticketForm.jsp").forward(req,resp);
+		IOException {
+		req.getRequestDispatcher("WEB-INF/jsp/view/ticketForm.jsp").forward(req, resp);
 	}
 
 
@@ -63,16 +98,18 @@ public class TicketsServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String action = req.getParameter("action");
 		if (action == null) {
-
-		} else {
-			switch (action) {
-				case "create":
-					createTicket(req,resp);
-					break;
-				default:
-					break;
-			}
+			action = "list";
 		}
+		switch (action) {
+			case "create":
+				createTicket(req, resp);
+				break;
+			case "download":
+			default:
+				resp.sendRedirect("tickets");
+				break;
+		}
+
 	}
 
 	private void createTicket(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -110,7 +147,7 @@ public class TicketsServlet extends HttpServlet{
 		int read;
 		byte[] buffer = new byte[2048];
 		while ((read = inputStream.read(buffer)) != -1) {
-			baos.write(buffer,0,read);
+			baos.write(buffer, 0, read);
 		}
 		Attachment attachment = new Attachment();
 		attachment.setName(filePart.getSubmittedFileName());
@@ -119,8 +156,9 @@ public class TicketsServlet extends HttpServlet{
 	}
 
 	private void listTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("ticketDatabase",ticketDatabase);
+		req.setAttribute("ticketDatabase", ticketDatabase);
 
-		req.getRequestDispatcher("/WEB-INF/jsp/view/listTickets.jsp").forward(req,resp);
+		//请求转换交给页面处理
+		req.getRequestDispatcher("/WEB-INF/jsp/view/listTickets.jsp").forward(req, resp);
 	}
 }

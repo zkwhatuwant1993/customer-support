@@ -47,5 +47,8 @@ public class Ticket {
 		attachments.put(attachment.getName(), attachment);
 	}
 
+	public int getNumberOfAttachments() {
+		return attachments.size();
+	}
 
 }
