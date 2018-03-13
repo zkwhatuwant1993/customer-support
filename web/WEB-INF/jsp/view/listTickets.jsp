@@ -1,4 +1,3 @@
-<%@ page import="com.zk.Ticket" %>
 <%@ page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: jackz
