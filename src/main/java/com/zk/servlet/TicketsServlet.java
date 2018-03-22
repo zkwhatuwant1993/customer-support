@@ -33,6 +33,10 @@ public class TicketsServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (req.getSession().getAttribute("username") == null) {
+			resp.sendRedirect("login");
+			return;
+		}
 		String action = req.getParameter("action");
 		if (action == null) {
 			listTickets(req, resp);
@@ -96,6 +100,10 @@ public class TicketsServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (req.getSession().getAttribute("username") == null) {
+			resp.sendRedirect("login");
+			return;
+		}
 		String action = req.getParameter("action");
 		if (action == null) {
 			action = "list";
@@ -116,7 +124,7 @@ public class TicketsServlet extends HttpServlet {
 		// 根据用户填写信息实例化Ticket数据并保存到数据库中
 		//实例化Ticket
 		Ticket ticket = new Ticket();
-		ticket.setCustomerName(req.getParameter("customerName"));
+		ticket.setCustomerName((String) req.getSession().getAttribute("username"));
 		ticket.setSubject(req.getParameter("subject"));
 		ticket.setBody(req.getParameter("body"));
 

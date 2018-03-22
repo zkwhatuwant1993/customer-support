@@ -1,4 +1,4 @@
-<%@ page session="false" import="java.util.Map" %><%--
+<%@page import="java.util.Map" %><%--
   Created by IntelliJ IDEA.
   User: jackz
   Date: 2018/3/7

@@ -5,17 +5,15 @@
   Time: 15:03
   To change this template use File | Settings | File Templates.
 --%>
-<%@page session="false" %>
 <html>
 <head>
     <title>Customer Support</title>
 </head>
 <body>
     <h2>Create a Ticket</h2>
+    <a href="<c:url value="/login?logout" />">Logout</a>
     <form method="post" action="tickets" enctype="multipart/form-data">
         <input type="hidden" name="action" value="create">
-        YourName<br>
-        <input type="text" name="customerName" /><br><br>
         Subject<br>
         <input type="text" name="subject" /><br><br>
         Body<br>
