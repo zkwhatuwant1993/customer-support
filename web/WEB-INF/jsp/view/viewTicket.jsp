@@ -1,22 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jackz
-  Date: 2018/3/7
-  Time: 16:26
-  To change this template use File | Settings | File Templates.
---%>
+<%--@elvariable id="ticketId" type="java.lang.String"--%>
+<%--@elvariable id="ticket" type="com.zk.Ticket"--%>
 <%
     Ticket ticket = (Ticket) request.getAttribute("ticket");
-    String id = (String) request.getAttribute("id");
 %>
 <html>
 <head>
     <title>Customer Support</title>
 </head>
 <body>
-    <h2>Ticket #<%= id%>: <%= ticket.getSubject()%></h2><br>
-    <i>Customer Name - <%= ticket.getCustomerName()%></i><br><br>
-    <%= ticket.getBody()%><br><br>
+    <h2>Ticket #${ticket}: ${ticket.subject}</h2><br>
+    <i>Customer Name - ${ticket.customerName}</i><br><br>
+    ${ticket.body}<br><br>
     <%
         if (ticket.getNumberOfAttachments() > 0) {
         	%>Attachments: <%
@@ -28,7 +22,7 @@
             }
             %><a href="<c:url value="/tickets">
             <c:param name="action" value="download" />
-            <c:param name="ticketId" value="<%= id%>"/>
+            <c:param name="ticketId" value="${ticketId}"/>
             <c:param name="attachment" value="<%= attachment.getName()%>"/>
             </c:url>"><%=attachment.getName()%></a>
         <%
