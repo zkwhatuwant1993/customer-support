@@ -84,11 +84,11 @@ public class TicketsServlet extends HttpServlet {
 	}
 
 	private void viewTicket(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String id = req.getParameter("ticketId");
-		Ticket ticket = ticketDatabase.get(Integer.valueOf(id));
+		String ticketId = req.getParameter("ticketId");
+		Ticket ticket = ticketDatabase.get(Integer.valueOf(ticketId));
 
 		req.setAttribute("ticket", ticket);
-		req.setAttribute("id", id);
+		req.setAttribute("ticketId", ticketId);
 		req.getRequestDispatcher("WEB-INF/jsp/view/viewTicket.jsp").forward(req, resp);
 	}
 

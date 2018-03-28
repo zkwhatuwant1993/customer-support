@@ -12,7 +12,7 @@
 <body>
     <h2>Create a Ticket</h2>
     <a href="<c:url value="/login?logout" />">Logout</a>
-    <form method="post" action="tickets" enctype="multipart/form-data">
+    <form method="post" action="<c:url value="/tickets"/>" enctype="multipart/form-data">
         <input type="hidden" name="action" value="create">
         Subject<br>
         <input type="text" name="subject" /><br><br>
