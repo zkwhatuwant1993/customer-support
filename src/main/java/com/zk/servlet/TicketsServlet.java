@@ -14,6 +14,7 @@ import javax.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -144,6 +145,7 @@ public class TicketsServlet extends HttpServlet {
 			ticketDatabase.put(id, ticket);
 		}
 
+		ticket.setDateCreated(OffsetDateTime.now());
 		//重定向到TicketList页面
 		resp.sendRedirect("tickets?action=view&ticketId=" + id);
 	}

@@ -1,54 +1,64 @@
 package com.zk;
 
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Ticket {
 
-	private String customerName;
-	private String subject;
-	private String body;
-	private Map<String, Attachment> attachments = new HashMap<>();
+    private String customerName;
+    private String subject;
+    private String body;
+    private Map<String, Attachment> attachments = new HashMap<>();
+    private OffsetDateTime dateCreated;
 
-	public String getCustomerName() {
-		return customerName;
-	}
+    public OffsetDateTime getDateCreated() {
+        return dateCreated;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public void setDateCreated(OffsetDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public String getBody() {
-		return body;
-	}
+    public String getCustomerName() {
+        return customerName;
+    }
 
-	public Collection<Attachment> getAttachments() {
-		return attachments.values();
-	}
+    public String getSubject() {
+        return subject;
+    }
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
+    public String getBody() {
+        return body;
+    }
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    public Collection<Attachment> getAttachments() {
+        return attachments.values();
+    }
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
-	public Attachment getAttachment(String name) {
-		return attachments.get(name);
-	}
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-	public void addAttachment(Attachment attachment) {
-		attachments.put(attachment.getName(), attachment);
-	}
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-	public int getNumberOfAttachments() {
-		return attachments.size();
-	}
+    public Attachment getAttachment(String name) {
+        return attachments.get(name);
+    }
+
+    public void addAttachment(Attachment attachment) {
+        attachments.put(attachment.getName(), attachment);
+    }
+
+    public int getNumberOfAttachments() {
+        return attachments.size();
+    }
 
 }

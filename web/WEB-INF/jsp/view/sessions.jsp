@@ -1,20 +1,6 @@
 <%--@elvariable id="countOfSession" type="java.lang.Integer"--%>
 <%@ page import="java.util.List" %>
-<%!
-    private static String toString(long timeInterval)
-    {
-        if(timeInterval < 1_000)
-            return "less than one second";
-        if(timeInterval < 60_000)
-            return (timeInterval / 1_000) + " seconds";
-        return "about " + (timeInterval / 60_000) + " minutes";
-    }
-%>
-<%
-    @SuppressWarnings("unchecked")
-    List<HttpSession> sessions =
-            (List<HttpSession>)request.getAttribute("sessions");
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
