@@ -1,14 +1,9 @@
 <%--@elvariable id="ticketId" type="java.lang.String"--%>
 <%--@elvariable id="ticket" type="com.zk.Ticket"--%>
-
-<html>
-<head>
-    <title>Customer Support</title>
-</head>
-<body>
-    <h2>Ticket #${ticketId}: ${ticket.subject}</h2><br>
-    <i>Customer Name - ${ticket.customerName}</i><br><br>
-    ${ticket.body}<br><br>
+<template:basic htmlTitle="${ticket.subject}" bodyTitle="Ticket #${ticketId}: ${ticket.subject}">
+    <i>Customer Name - <c:out value="${ticket.customerName}"/><br>
+    Created <zyy:formatDate value="${ticket.dateCreated}" type="both" timeStyle="long" dateStyle="full" /></i><br><br>
+    <c:out value="${ticket.body}" /><br><br>
     <c:if test="${ticket.numberOfAttachments > 0}">
         Attachments:
         <c:forEach items="${ticket.attachments}" var="attachment" varStatus="status">
@@ -21,6 +16,4 @@
         </c:forEach>
         <br><br>
     </c:if>
-    <a href="<c:url value="/tickets" /> ">Return to list tickets</a>
-</body>
-</html>
+</template:basic>

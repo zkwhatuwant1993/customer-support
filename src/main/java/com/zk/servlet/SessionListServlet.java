@@ -24,7 +24,7 @@ public class SessionListServlet extends HttpServlet {
 		}
 
 		req.setAttribute("countOfSessions", SessionRepository.getCountOfSessions());
-		req.setAttribute("sessions", SessionRepository.getAllSessions());
+		req.setAttribute("sessionList", SessionRepository.getAllSessions());
 		req.getRequestDispatcher("/WEB-INF/jsp/view/sessions.jsp").forward(req, resp);
 	}
 }
